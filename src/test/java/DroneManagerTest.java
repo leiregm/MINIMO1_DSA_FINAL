@@ -1,8 +1,9 @@
-import edu.upc.dsa.DroneManager;
-import edu.upc.dsa.DroneManagerImpl;
-import models.Drone;
+
+import edu.upc.dsa.DronManagerImpl;
+import models.Dron;
 import models.PlanVuelo;
 import models.Posicion;
+
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
@@ -15,155 +16,111 @@ import static org.junit.Assert.*;
 
 public class DroneManagerTest {
 
-    private DroneManagerImpl pm;
+    private DronManagerImpl manager;
 
     @Before
     public void setUp() {
+        manager = DronManagerImpl.getInstance();
+        manager.clear();
 
-        pm = DroneManagerImpl.getInstance();
-        pm.clear();
+        manager.addDrone("D1", "Drone 1", "DJI", "Mini 4");
+        manager.addDrone("D2", "Drone 2", "DJI", "Air 3");
 
-        // Drones de prueba
-        pm.addDrone("D1", "Drone 1", "DJI", "Mini 4");
-        pm.addDrone("D2", "Drone 2", "DJI", "Air 3");
-
-        // Pilotos de prueba
-        pm.addPiloto("P1", "Juan", "Garcia");
-        pm.addPiloto("P2", "Ana", "Lopez");
+        manager.addPiloto("P1", "Juan", "Garcia");
+        manager.addPiloto("P2", "Ana", "Lopez");
     }
 
     @After
     public void tearDown() {
-        pm.clear();
+        manager.clear();
     }
 
-    // TEST 1: AÑADIR DRONES Y PILOTOS
     @Test
     public void testAddDroneYPiloto() {
+        assertNotNull(manager.getDrone("D1"));
+        assertNotNull(manager.getDrone("D2"));
+        assertNotNull(manager.getPiloto("P1"));
+        assertNotNull(manager.getPiloto("P2"));
 
-        assertNotNull(pm.getDrone("D1"));
-        assertNotNull(pm.getDrone("D2"));
-
-        assertNotNull(pm.getPiloto("P1"));
-        assertNotNull(pm.getPiloto("P2"));
-
-        assertEquals("DJI",
-                pm.getDrone("D1").getFabricante());
-
-        assertEquals("Juan",
-                pm.getPiloto("P1").getNombre());
+        assertEquals("DJI", manager.getDrone("D1").getFabricante());
+        assertEquals("Juan", manager.getPiloto("P1").getNombre());
     }
 
-    // TEST 2: ORDENAR POR HORAS DESCENDENTES
     @Test
     public void testOrdenarPorHoras() {
-
-        LocalDateTime fecha =
-                LocalDateTime.of(2026, 11, 6, 10, 0);
+        LocalDateTime fecha = LocalDateTime.of(2026, 11, 6, 10, 0);
 
         List<Posicion> posiciones = Arrays.asList(
                 new Posicion(41.27, 1.98),
                 new Posicion(41.30, 2.00)
         );
 
-        // D1 y P1 tienen 4 horas
-        pm.crearPlanVuelo(
-                "D1", "P1", fecha, 4, posiciones
-        );
+        manager.crearPlanVuelo("D1", "P1", fecha, 4, posiciones);
+        manager.crearPlanVuelo("D2", "P2", fecha, 2, posiciones);
 
-        // D2 y P2 tienen 2 horas
-        pm.crearPlanVuelo(
-                "D2", "P2", fecha, 2, posiciones
-        );
+        assertEquals("D1", manager.getDronesByHours().get(0).getId());
+        assertEquals("D2", manager.getDronesByHours().get(1).getId());
 
-        assertEquals("D1",
-                pm.getDronesByHours().get(0).getId());
-
-        assertEquals("D2",
-                pm.getDronesByHours().get(1).getId());
-
-        assertEquals("P1",
-                pm.getPilotosByHours().get(0).getId());
-
-        assertEquals("P2",
-                pm.getPilotosByHours().get(1).getId());
+        assertEquals("P1", manager.getPilotosByHours().get(0).getId());
+        assertEquals("P2", manager.getPilotosByHours().get(1).getId());
     }
 
-    // TEST 3: ALMACEN Y MANTENIMIENTO FIFO
     @Test
     public void testAlmacenFIFO() {
+        manager.guardarDrone("D1");
+        manager.guardarDrone("D2");
 
-        pm.guardarDrone("D1");
-        pm.guardarDrone("D2");
+        assertTrue(manager.getDrone("D1").isEnMantenimiento());
+        assertTrue(manager.getDrone("D2").isEnMantenimiento());
 
-        assertTrue(pm.getDrone("D1").isEnMantenimiento());
-        assertTrue(pm.getDrone("D2").isEnMantenimiento());
-
-        // Se repara primero D1
-        Drone primero = pm.repararDrone();
+        Dron primero = manager.repararDrone();
 
         assertEquals("D1", primero.getId());
         assertFalse(primero.isEnMantenimiento());
 
-        // Después se repara D2
-        Drone segundo = pm.repararDrone();
+        Dron segundo = manager.repararDrone();
 
         assertEquals("D2", segundo.getId());
         assertFalse(segundo.isEnMantenimiento());
     }
 
-    // TEST 4: PLANES DE VUELO Y CONFLICTOS
     @Test
     public void testPlanVueloYConflictos() {
-
-        LocalDateTime fecha =
-                LocalDateTime.of(2026, 11, 6, 10, 0);
+        LocalDateTime fecha = LocalDateTime.of(2026, 11, 6, 10, 0);
 
         List<Posicion> posiciones = Arrays.asList(
                 new Posicion(41.27, 1.98),
                 new Posicion(41.30, 2.00)
         );
 
-        // Crear plan de vuelo correctamente
-        PlanVuelo plan = pm.crearPlanVuelo(
+        PlanVuelo plan = manager.crearPlanVuelo(
                 "D1", "P1", fecha, 2, posiciones
         );
 
         assertNotNull(plan);
+        assertEquals(1, manager.getPlanesByDrone("D1").size());
+        assertEquals(1, manager.getPlanesByPiloto("P1").size());
 
-        // El plan aparece en ambos historiales
-        assertEquals(1,
-                pm.getPlanesByDrone("D1").size());
-
-        assertEquals(1,
-                pm.getPlanesByPiloto("P1").size());
-
-        // Error: el dron D1 ya está ocupado
+        // El dron ya tiene una reserva en ese horario
         assertThrows(IllegalStateException.class, () ->
-                pm.crearPlanVuelo(
-                        "D1", "P2",
-                        fecha.plusHours(1),
-                        1, posiciones
+                manager.crearPlanVuelo(
+                        "D1", "P2", fecha.plusHours(1), 1, posiciones
                 )
         );
 
-        // Error: el piloto P1 ya está ocupado
+        // El piloto ya tiene una reserva en ese horario
         assertThrows(IllegalStateException.class, () ->
-                pm.crearPlanVuelo(
-                        "D2", "P1",
-                        fecha.plusHours(1),
-                        1, posiciones
+                manager.crearPlanVuelo(
+                        "D2", "P1", fecha.plusHours(1), 1, posiciones
                 )
         );
 
-        // Error: D2 está en mantenimiento
-        pm.guardarDrone("D2");
+        // No se puede reservar un dron que esta en mantenimiento
+        manager.guardarDrone("D2");
 
         assertThrows(IllegalStateException.class, () ->
-                pm.crearPlanVuelo(
-                        "D2", "P2",
-                        fecha.plusDays(1),
-                        1, posiciones
+                manager.crearPlanVuelo(
+                        "D2", "P2", fecha.plusDays(1), 1, posiciones
                 )
         );
     }

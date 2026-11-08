@@ -3,7 +3,7 @@ package models;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Drone {
+public class Dron {
 
     private String id;
     private String nombre;
@@ -15,9 +15,8 @@ public class Drone {
     private List<PlanVuelo> planesDelDron =
             new LinkedList<>();
 
-    public Drone(String id, String nombre,
-                 String fabricante, String modelo) {
-
+    public Dron(String id, String nombre, String fabricante, String modelo)
+    {
         this.id = id;
         this.nombre = nombre;
         this.fabricante = fabricante;
@@ -26,43 +25,53 @@ public class Drone {
         this.enMantenimiento = false;
     }
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public String getFabricante() {
+    public String getFabricante()
+    {
         return fabricante;
     }
 
-    public String getModelo() {
+    public String getModelo()
+    {
         return modelo;
     }
 
-    public double getHorasVuelo() {
+    public double getHorasVuelo()
+    {
         return horasVuelo;
     }
 
-    public boolean isEnMantenimiento() {
+    public boolean isEnMantenimiento()
+    {
         return enMantenimiento;
     }
 
-    public void setEnMantenimiento(boolean valor) {
+    public void setEnMantenimiento(boolean valor)
+    {
         this.enMantenimiento = valor;
     }
 
-    public List<PlanVuelo> getPlanesDelDron() {
+    public List<PlanVuelo> getPlanesDelDron()
+    {
         return planesDelDron;
     }
 
-    public void addPlanVuelo(PlanVuelo plan) {
+    public void addPlanVuelo(PlanVuelo plan)
+    {
         planesDelDron.add(plan);
     }
 
-    public void addHorasVuelo(double horas) {
+    public void addHorasVuelo(double horas)
+    {
         this.horasVuelo += horas;
     }
 }

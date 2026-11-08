@@ -7,19 +7,22 @@ import models.Posicion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlanVueloDTO {
+public class PlanVueloDatos
+{
 
     private String idDrone;
     private String idPiloto;
     private String fechaInicio;
     private String fechaFin;
     private double duracionHoras;
-    private List<PosicionDTO> posiciones;
+    private List<PosicionDatos> posiciones;
 
-    public PlanVueloDTO() {
+    public PlanVueloDatos()
+    {
     }
 
-    public PlanVueloDTO(PlanVuelo plan) {
+    public PlanVueloDatos(PlanVuelo plan)
+    {
 
         this.idDrone = plan.getDrone().getId();
         this.idPiloto = plan.getPiloto().getId();
@@ -34,9 +37,10 @@ public class PlanVueloDTO {
 
         this.posiciones = new ArrayList<>();
 
-        for (Posicion p : plan.getPosiciones()) {
+        for (Posicion p : plan.getPosiciones())
+        {
 
-            PosicionDTO dto = new PosicionDTO();
+            PosicionDatos dto = new PosicionDatos();
 
             dto.setLatitud(p.getLatitud());
             dto.setLongitud(p.getLongitud());
@@ -45,27 +49,33 @@ public class PlanVueloDTO {
         }
     }
 
-    public String getIdDrone() {
+    public String getIdDrone()
+    {
         return idDrone;
     }
 
-    public String getIdPiloto() {
+    public String getIdPiloto()
+    {
         return idPiloto;
     }
 
-    public String getFechaInicio() {
+    public String getFechaInicio()
+    {
         return fechaInicio;
     }
 
-    public String getFechaFin() {
+    public String getFechaFin()
+    {
         return fechaFin;
     }
 
-    public double getDuracionHoras() {
+    public double getDuracionHoras()
+    {
         return duracionHoras;
     }
 
-    public List<PosicionDTO> getPosiciones() {
+    public List<PosicionDatos> getPosiciones()
+    {
         return posiciones;
     }
 }

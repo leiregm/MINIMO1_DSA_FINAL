@@ -61,8 +61,8 @@ public class Main {
         logger.info("Inicio Main");
 
         // Obtener la instancia Singleton
-        DroneManager pm =
-                DroneManagerImpl.getInstance();
+        DronManager pm =
+                DronManagerImpl.getInstance();
 
         // Iniciar servidor
         HttpServer server = startServer();

@@ -1,9 +1,9 @@
 
 package edu.upc.dsa.services;
 
-import edu.upc.dsa.DroneManager;
-import edu.upc.dsa.DroneManagerImpl;
-import models.Drone;
+import edu.upc.dsa.DronManager;
+import edu.upc.dsa.DronManagerImpl;
+import models.Dron;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,37 +15,33 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Api(value = "/mantenimiento",
-        description = "Servicio de mantenimiento")
+@Api(value = "/mantenimiento", description = "Mantenimiento de drones")
 @Path("/mantenimiento")
 public class Mantenimiento {
 
-    private DroneManager pm =
-            DroneManagerImpl.getInstance();
+    private final DronManager manager = DronManagerImpl.getInstance();
 
     @POST
     @Path("/drones/{idDrone}")
     @Produces(MediaType.TEXT_PLAIN)
-    @ApiOperation(value = "Guardar dron en mantenimiento")
-    public Response guardarDrone(
-            @PathParam("idDrone") String idDrone) {
+    @ApiOperation(value = "Dron en mantenimiento")
+    public Response guardarDrone(@PathParam("idDrone") String idDrone)
+    {
 
-        try {
-            pm.guardarDrone(idDrone);
+        try
+        {
+            manager.guardarDrone(idDrone);
 
-            return Response.ok(
-                    "Dron guardado en mantenimiento"
-            ).build();
+            return Response.ok("Dron en mantenimiento").build();
 
-        } catch (IllegalArgumentException e) {
-            return Response.status(404)
-                    .entity("Dron no encontrado")
-                    .build();
+        }
+        catch (IllegalArgumentException e)
+        {
+            return Response.status(404).entity("Dron no encontrado").build();
 
-        } catch (IllegalStateException e) {
-            return Response.status(409)
-                    .entity("Dron ya en mantenimiento")
-                    .build();
+        }
+        catch (IllegalStateException e) {
+            return Response.status(409).entity("Dron ya en mantenimiento").build();
         }
     }
 
@@ -53,19 +49,19 @@ public class Mantenimiento {
     @Path("/repair")
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value = "Reparar siguiente dron")
-    public Response repararDrone() {
+    public Response repararDrone()
+    {
+        try
+        {
+            Dron dron = manager.repararDrone();
 
-        try {
-            Drone drone = pm.repararDrone();
+            return Response.ok(new DronDatos(dron)).build();
 
-            return Response.ok(
-                    new DroneDTO(drone)
-            ).build();
-
-        } catch (IllegalStateException e) {
+        }
+        catch (IllegalStateException e)
+        {
             return Response.status(404)
-                    .entity("Almacen vacio")
-                    .build();
+                    .type(MediaType.TEXT_PLAIN).entity("Almacen vacio").build();
         }
     }
 }

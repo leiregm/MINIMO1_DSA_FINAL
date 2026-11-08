@@ -4,19 +4,17 @@ package models;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class PlanVuelo {
+public class PlanVuelo
+{
 
-    private Drone drone;
+    private Dron drone;
     private Piloto piloto;
     private LocalDateTime fechaInicio;
     private double duracionHoras;
     private List<Posicion> posiciones;
 
-    public PlanVuelo(Drone drone, Piloto piloto,
-                     LocalDateTime fechaInicio,
-                     double duracionHoras,
-                     List<Posicion> posiciones) {
-
+    public PlanVuelo(Dron drone, Piloto piloto, LocalDateTime fechaInicio, double duracionHoras, List<Posicion> posiciones)
+    {
         this.drone = drone;
         this.piloto = piloto;
         this.fechaInicio = fechaInicio;
@@ -24,36 +22,38 @@ public class PlanVuelo {
         this.posiciones = posiciones;
     }
 
-    public Drone getDrone() {
+    public Dron getDrone()
+    {
         return drone;
     }
 
-    public Piloto getPiloto() {
+    public Piloto getPiloto()
+    {
         return piloto;
     }
 
-    public LocalDateTime getFechaInicio() {
+    public LocalDateTime getFechaInicio()
+    {
         return fechaInicio;
     }
 
-    public double getDuracionHoras() {
+    public double getDuracionHoras()
+    {
         return duracionHoras;
     }
 
-    public List<Posicion> getPosiciones() {
+    public List<Posicion> getPosiciones()
+    {
         return posiciones;
     }
 
-    public LocalDateTime getFechaFin() {
-        return fechaInicio.plusSeconds(
-                Math.round(duracionHoras * 3600)
-        );
+    public LocalDateTime getFechaFin()
+    {
+        return fechaInicio.plusSeconds(Math.round(duracionHoras * 3600));
     }
 
-    public boolean seSolapa(
-            LocalDateTime inicio,
-            LocalDateTime fin) {
-
+    public boolean seSolapa(LocalDateTime inicio, LocalDateTime fin)
+    {
         return inicio.isBefore(getFechaFin())
                 && fechaInicio.isBefore(fin);
     }

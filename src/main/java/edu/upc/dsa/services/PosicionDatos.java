@@ -1,27 +1,33 @@
 
 package edu.upc.dsa.services;
 
-public class PosicionDTO {
+public class PosicionDatos
+{
 
     private double latitud;
     private double longitud;
 
-    public PosicionDTO() {
+    public PosicionDatos()
+    {
     }
 
-    public double getLatitud() {
+    public double getLatitud()
+    {
         return latitud;
     }
 
-    public void setLatitud(double latitud) {
+    public void setLatitud(double latitud)
+    {
         this.latitud = latitud;
     }
 
-    public double getLongitud() {
+    public double getLongitud()
+    {
         return longitud;
     }
 
-    public void setLongitud(double longitud) {
+    public void setLongitud(double longitud)
+    {
         this.longitud = longitud;
     }
 }

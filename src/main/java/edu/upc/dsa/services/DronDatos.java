@@ -1,20 +1,21 @@
 
 package edu.upc.dsa.services;
 
-import models.Drone;
+import models.Dron;
 
-public class DroneDTO {
-
+public class DronDatos
+{
     private String id;
     private String nombre;
     private String fabricante;
     private String modelo;
     private double horasVuelo;
 
-    public DroneDTO() {
+    public DronDatos()
+    {
     }
-
-    public DroneDTO(Drone drone) {
+    public DronDatos(Dron drone)
+    {
         this.id = drone.getId();
         this.nombre = drone.getNombre();
         this.fabricante = drone.getFabricante();
@@ -22,39 +23,48 @@ public class DroneDTO {
         this.horasVuelo = drone.getHorasVuelo();
     }
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(String id)
+    {
         this.id = id;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public String getFabricante() {
+    public String getFabricante()
+    {
         return fabricante;
     }
 
-    public void setFabricante(String fabricante) {
+    public void setFabricante(String fabricante)
+    {
         this.fabricante = fabricante;
     }
 
-    public String getModelo() {
+    public String getModelo()
+    {
         return modelo;
     }
 
-    public void setModelo(String modelo) {
+    public void setModelo(String modelo)
+    {
         this.modelo = modelo;
     }
 
-    public double getHorasVuelo() {
+    public double getHorasVuelo()
+    {
         return horasVuelo;
     }
 }

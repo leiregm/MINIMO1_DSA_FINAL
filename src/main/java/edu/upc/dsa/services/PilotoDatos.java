@@ -3,48 +3,58 @@ package edu.upc.dsa.services;
 
 import models.Piloto;
 
-public class PilotoDTO {
+public class PilotoDatos
+{
 
     private String id;
     private String nombre;
     private String apellidos;
     private double horasVuelo;
 
-    public PilotoDTO() {
+    public PilotoDatos()
+    {
     }
 
-    public PilotoDTO(Piloto piloto) {
+    public PilotoDatos(Piloto piloto)
+    {
         this.id = piloto.getId();
         this.nombre = piloto.getNombre();
         this.apellidos = piloto.getApellidos();
         this.horasVuelo = piloto.getHorasVuelo();
     }
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(String id)
+    {
         this.id = id;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre)
+    {
         this.nombre = nombre;
     }
 
-    public String getApellidos() {
+    public String getApellidos()
+    {
         return apellidos;
     }
 
-    public void setApellidos(String apellidos) {
+    public void setApellidos(String apellidos)
+    {
         this.apellidos = apellidos;
     }
 
-    public double getHorasVuelo() {
+    public double getHorasVuelo()
+    {
         return horasVuelo;
     }
 }

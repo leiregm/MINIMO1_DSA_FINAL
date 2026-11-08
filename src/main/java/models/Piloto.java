@@ -13,40 +13,46 @@ public class Piloto {
     private List<PlanVuelo> planesDelPiloto =
             new LinkedList<>();
 
-    public Piloto(String id, String nombre,
-                  String apellidos) {
-
+    public Piloto(String id, String nombre, String apellidos)
+    {
         this.id = id;
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.horasVuelo = 0;
     }
 
-    public String getId() {
+    public String getId()
+    {
         return id;
     }
 
-    public String getNombre() {
+    public String getNombre()
+    {
         return nombre;
     }
 
-    public String getApellidos() {
+    public String getApellidos()
+    {
         return apellidos;
     }
 
-    public double getHorasVuelo() {
+    public double getHorasVuelo()
+    {
         return horasVuelo;
     }
 
-    public List<PlanVuelo> getPlanesDelPiloto() {
+    public List<PlanVuelo> getPlanesDelPiloto()
+    {
         return planesDelPiloto;
     }
 
-    public void addPlanVuelo(PlanVuelo plan) {
+    public void addPlanVuelo(PlanVuelo plan)
+    {
         planesDelPiloto.add(plan);
     }
 
-    public void addHorasVuelo(double horas) {
+    public void addHorasVuelo(double horas)
+    {
         this.horasVuelo += horas;
     }
 }
